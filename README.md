@@ -20,7 +20,7 @@ If you make use of this code in your own work, please cite our paper:
 }
 ```
 
-### Acknoledgements
+### Acknowledgements
 Loosely based on the implementation by [voiler](https://github.com/voiler/PopulationBasedTraining).
 Including modified code from [Disentanglement-lib](https://github.com/google-research/disentanglement_lib) and [beta-tcvae](https://github.com/rtqichen/beta-tcvae)
 
