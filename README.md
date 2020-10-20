@@ -1,8 +1,28 @@
-### Code for: Robust Disentanglement of a Few Factors at a Time
-This Repo contains cleaned-up code for the before-mentioned submission. 
+# Robust Disentanglement of a Few Factors at a Time
+This repository contains the released code for:
 
+### Robust Disentanglement of a Few Factors at a Time
+Benjamin Estermann*, Markus Marks*, Mehmet Fatih Yanik
+
+[https://arxiv.to.come/paper](https://arxiv.to.come/paper)
+
+### Abstract
+Disentanglement  is  at  the  forefront  of  unsupervised  learning,  as  disentangledrepresentations of data improve generalization, interpretability, and performancein downstream tasks.  Current unsupervised approaches remain inapplicable forreal-world datasets since they are highly variable in their performance and fail toreach levels of disentanglement of (semi-)supervised approaches. We introducepopulation-based training (PBT) for improving consistency in training variationalautoencoders (VAEs) and demonstrate the validity of this approach in a supervisedsetting (PBT-VAE). We then use Unsupervised Disentanglement Ranking (UDR)as an unsupervised heuristic to score models in our PBT-VAE training and showhow models trained this way tend to consistently disentangle only a subset of thegenerative factors. Building on top of this observation we introduce the recursiverPU-VAE approach.  We train the model until convergence, remove the learnedfactors from the dataset and reiterate.  In doing so, we can label subsets of thedataset with the learned factors and consecutively use these labels to train one modelthat fully disentangles the whole dataset.  With this approach, we show strikingimprovement in state-of-the-art unsupervised disentanglement performance androbustness across multiple datasets and metrics.
+
+### Cite
+If you make use of this code in your own work, please cite our paper:
+```
+@article{estermann2020robust,
+    title={Robust Disentanglement of a Few Factors at a Time},
+    author={Estermann, Benjamin and Marks, Markus and Yanik, Mehmet Fatih},
+    journal={NeurIPS},
+    year={2020}
+}
+```
+
+### Acknoledgements
 Loosely based on the implementation by [voiler](https://github.com/voiler/PopulationBasedTraining).
-Including code from [Disentanglement-lib](https://github.com/google-research/disentanglement_lib) and [beta-tcvae](https://github.com/rtqichen/beta-tcvae)
+Including modified code from [Disentanglement-lib](https://github.com/google-research/disentanglement_lib) and [beta-tcvae](https://github.com/rtqichen/beta-tcvae)
 
 ### Usage
 
@@ -23,3 +43,6 @@ If you want more control over which GPUs should be used, and write the output in
 
 if you dont have the expect package for conda installed, you can install it with:
 `conda install -c eumetsat expect`
+
+### Contact
+[Benjamin Estermann](mailto:benjamin.estermann@bluewin.ch)
