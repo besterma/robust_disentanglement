@@ -1,0 +1,97 @@
+# Macros:
+# ==============================================================================
+dataset_path = '/root/pbt4vae/data/3dshapes.npz'
+hyper_parameters = ['lr', 'batch_size', 'beta']
+max_epoch = 20
+model_dir = '/root/pbt4vae/recursive_udr_X_3dshapes/3'
+trainer_class = @vae_trainer.UdrVaeTrainer
+
+# Parameters for dataset:
+# ==============================================================================
+dataset.name = '3dshapes'
+
+# Parameters for exploit_and_explore:
+# ==============================================================================
+exploit_and_explore.hyper_params = %hyper_parameters
+exploit_and_explore.perturb_factors = (2, 1.2, 0.8, 0.5)
+
+# Parameters for GeneralExplorer:
+# ==============================================================================
+GeneralExplorer.cutoff = 0.2
+GeneralExplorer.dataset_path = %dataset_path
+GeneralExplorer.exploit_and_explore_func = @exploit_and_explore
+GeneralExplorer.trainer_class = %trainer_class
+
+# Parameters for GeneralVaeTrainer:
+# ==============================================================================
+GeneralVaeTrainer.batch_size_init_function = @get_init_batch_size
+GeneralVaeTrainer.beta_init_function = @get_init_beta
+GeneralVaeTrainer.epoch_train_steps = 480000
+GeneralVaeTrainer.hyper_params = %hyper_parameters
+GeneralVaeTrainer.is_test_run = False
+GeneralVaeTrainer.lr_init_function = @get_init_lr
+GeneralVaeTrainer.model_class = @vae_quant.UDRVAE
+GeneralVaeTrainer.optimizer_class = @torch.Adam
+GeneralVaeTrainer.score_random_seed = 0
+
+# Parameters for GeneralWorker:
+# ==============================================================================
+GeneralWorker.eval_score = True
+GeneralWorker.trainer_class = %trainer_class
+
+# Parameters for pbt_main:
+# ==============================================================================
+pbt_main.device = 'cuda'
+pbt_main.existing_parameter_dict = None
+pbt_main.explorer_class = @RecursiveBruteForceExplorerX
+pbt_main.model_dir = %model_dir
+pbt_main.population_size = 56
+pbt_main.random_seed = 2
+pbt_main.worker_size = 7
+
+# Parameters for RecursiveBruteForceExplorerX:
+# ==============================================================================
+RecursiveBruteForceExplorerX.is_x_run = True
+RecursiveBruteForceExplorerX.score_threshold = 0.87
+RecursiveBruteForceExplorerX.x_model_path = 'pathTOsomeMODEL'
+RecursiveBruteForceExplorerX.x_peak = 0
+
+# Parameters for udr_sklearn:
+# ==============================================================================
+udr_sklearn.batch_size = 10
+udr_sklearn.correlation_matrix = 'lasso'
+udr_sklearn.filter_low_kl = True
+udr_sklearn.include_raw_correlations = True
+udr_sklearn.kl_filter_threshold = 0.01
+udr_sklearn.num_data_points = 1000
+udr_sklearn.pytorch = True
+
+# Parameters for udr_sklearn_2:
+# ==============================================================================
+udr_sklearn_2.batch_size = 10
+udr_sklearn_2.correlation_matrix = 'lasso'
+udr_sklearn_2.filter_low_kl = True
+udr_sklearn_2.include_raw_correlations = True
+udr_sklearn_2.kl_filter_threshold = 0.01
+udr_sklearn_2.num_data_points = 1000
+udr_sklearn_2.pytorch = True
+
+# Parameters for UDRVAE:
+# ==============================================================================
+UDRVAE.conv = True
+UDRVAE.include_mutinfo = True
+UDRVAE.mss = False
+UDRVAE.num_channels = 3
+UDRVAE.tcvae = True
+UDRVAE.use_cuda = True
+UDRVAE.z_dim = 10
+
+# Parameters for VAE:
+# ==============================================================================
+VAE.conv = True
+VAE.include_mutinfo = True
+VAE.mss = False
+VAE.num_channels = 3
+VAE.tcvae = True
+VAE.use_cuda = True
+VAE.z_dim = 10

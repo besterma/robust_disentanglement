@@ -1,0 +1,59 @@
+start_epoch = 0
+max_epoch = 10
+hyper_parameters = ['lr', 'batch_size', 'beta']
+random_seed = 35
+
+dataset.name = "shapes3d"
+pbt.random_seed = %random_seed
+
+
+pbt_main.device = 'cuda'
+pbt_main.population_size = 40
+pbt_main.worker_size = 8
+pbt_main.random_seed = %random_seed
+pbt_main.start_epoch = %start_epoch
+pbt_main.existing_parameter_dict = None
+
+explorer.max_epoch = %max_epoch
+explorer.trainer_class = @vae_trainer.VaeTrainer
+explorer.exploit_and_explore_func = @exploit_and_explore
+explorer.cutoff = 0.2
+
+exploit_and_explore.hyper_params = %hyper_parameters
+exploit_and_explore.perturb_factors = (2, 1.2, 0.8, 0.5)
+
+worker.max_epoch = %max_epoch
+worker.trainer_class = @vae_trainer.VaeTrainer # Does not work at the moment
+
+vae_trainer.VaeTrainer.model_class = @vae_quant.VAE
+vae_trainer.VaeTrainer.optimizer_class = @torch.Adam
+vae_trainer.VaeTrainer.hyper_params = %hyper_parameters
+vae_trainer.VaeTrainer.is_test_run = False
+vae_trainer.VaeTrainer.score_num_labels = None
+vae_trainer.VaeTrainer.epoch_train_steps = 737280
+vae_trainer.VaeTrainer.batch_size_init_function = @get_init_batch_size
+vae_trainer.VaeTrainer.beta_init_function = @get_init_beta
+vae_trainer.VaeTrainer.lr_init_function = @get_init_lr
+vae_trainer.VaeTrainer.eval_combine_function = @utils.mig_nmig_combination
+vae_trainer.VaeTrainer.eval_function = @nmig
+
+dci.num_train = 10000
+dci.num_test = 5000
+
+nmig.num_train = 2000
+nmig.batch_size = 1000
+nmig.active = None
+discretizer.discretizer_fn = @histogram_discretizer
+discretizer.num_bins = 20
+
+utils.mig_nmig_combination.ratio = 0.5
+
+vae_quant.VAE.z_dim = 10
+vae_quant.VAE.use_cuda = True
+vae_quant.VAE.include_mutinfo = True
+vae_quant.VAE.tcvae = True
+vae_quant.VAE.conv = True
+vae_quant.VAE.mss = False
+vae_quant.VAE.num_channels = 3
+
+

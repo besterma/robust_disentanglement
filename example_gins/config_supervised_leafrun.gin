@@ -1,0 +1,96 @@
+# Macros:
+# ==============================================================================
+dataset_path = '/root/pbt4vae/data/3dshapes.npz'
+hyper_parameters = ['lr', 'batch_size', 'beta']
+max_epoch = 15
+model_dir = '/root/results/3dshapes/supervise_runs/3_3'
+random_seed = 2
+trainer_class = @vae_trainer.LeafNmigVaeTrainer
+
+# Parameters for ClassicExplorer:
+# ==============================================================================
+ClassicExplorer.max_epoch = %max_epoch
+
+# Parameters for dataset:
+# ==============================================================================
+dataset.name = 'shapes3d'
+
+# Parameters for discretizer:
+# ==============================================================================
+discretizer.discretizer_fn = @histogram_discretizer
+discretizer.num_bins = 20
+
+# Parameters for exploit_and_explore:
+# ==============================================================================
+exploit_and_explore.hyper_params = %hyper_parameters
+exploit_and_explore.perturb_factors = (2, 1.2, 0.8, 0.5)
+
+# Parameters for GeneralExplorer:
+# ==============================================================================
+GeneralExplorer.big_init_population_factor = 2
+GeneralExplorer.cutoff = 0.2
+GeneralExplorer.dataset_path = %dataset_path
+GeneralExplorer.exploit_and_explore_func = @exploit_and_explore
+GeneralExplorer.label_path = None
+GeneralExplorer.trainer_class = %trainer_class
+
+# Parameters for GeneralVaeTrainer:
+# ==============================================================================
+GeneralVaeTrainer.batch_size_init_function = @get_init_batch_size
+GeneralVaeTrainer.beta_init_function = @get_init_beta
+GeneralVaeTrainer.epoch_train_steps = 480000
+GeneralVaeTrainer.hyper_params = %hyper_parameters
+GeneralVaeTrainer.is_test_run = False
+GeneralVaeTrainer.lr_init_function = @get_init_lr
+GeneralVaeTrainer.model_class = @vae_quant.VAE
+GeneralVaeTrainer.optimizer_class = @torch.Adam
+GeneralVaeTrainer.score_random_seed = %random_seed
+
+# Parameters for GeneralWorker:
+# ==============================================================================
+GeneralWorker.eval_score = True
+GeneralWorker.trainer_class = %trainer_class
+
+# Parameters for LeafNmigVaeTrainer:
+# ==============================================================================
+# Here are the labels generated from the leaf-runs
+LeafNmigVaeTrainer.indice_label_paths = \
+    ['/root/3dshapes_i_and_l_3_1.npz',
+     '/root/3dshapes_i_and_l_3_2.npz',
+     '/root/3dshapes_i_and_l_3_3.npz']
+
+# Parameters for mig_nmig_combination:
+# ==============================================================================
+mig_nmig_combination.ratio = 1
+
+# Parameters for nmig:
+# ==============================================================================
+nmig.active = None
+nmig.batch_size = 64
+nmig.num_train = 50000
+
+# Parameters for nmig_leaf:
+# ==============================================================================
+nmig_leaf.batch_size = 8
+nmig_leaf.num_train = 50000
+
+# Parameters for pbt_main:
+# ==============================================================================
+pbt_main.device = 'cuda'
+pbt_main.exclusive_gpu_mode = False
+pbt_main.existing_parameter_dict = None
+pbt_main.explorer_class = @ClassicExplorer
+pbt_main.model_dir = %model_dir
+pbt_main.population_size = 56
+pbt_main.random_seed = %random_seed
+pbt_main.worker_size = 8
+
+# Parameters for VAE:
+# ==============================================================================
+VAE.conv = True
+VAE.include_mutinfo = True
+VAE.mss = False
+VAE.num_channels = 3
+VAE.tcvae = True
+VAE.use_cuda = True
+VAE.z_dim = 10
