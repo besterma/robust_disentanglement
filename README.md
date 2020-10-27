@@ -45,4 +45,4 @@ if you dont have the expect package for conda installed, you can install it with
 `conda install -c eumetsat expect`
 
 ### Contact
-[Benjamin Estermann](mailto:benjamin.estermann@bluewin.ch)
+[Benjamin Estermann](mailto:benjamin.estermann@bluewin.ch), [Markus Marks](mailto:marksm@ethz.ch)
